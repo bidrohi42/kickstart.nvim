@@ -65,13 +65,26 @@ function M:setup()
     -- 💀
     -- This is the default if not provided, you can remove it. Or adjust as needed.
     -- One dedicated LSP server & client will be started per unique root_dir
-    root_dir = require('jdtls.setup').find_root { '.git', 'mvnw', 'gradlew' },
+    -- root_dir = require('jdtls.setup').find_root { 'pom.xml', '.git', 'mvnw', 'gradlew' },
+
+    root_dir = require('jdtls.setup').find_root { 'pom.xml', 'mvnw', 'gradlew', 'build.gradle', 'build.gradle.kts', 'settings.gradle', '.git' },
 
     -- Here you can configure eclipse.jdt.ls specific settings
     -- See https://github.com/eclipse/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request
     -- for a list of options
+    -- settings = {
+    --   java = {},
+    -- },
+
     settings = {
-      java = {},
+      java = {
+        configuration = {
+          updateBuildConfiguration = 'interactive', -- Asks before refreshing if build.gradle changes
+        },
+        gradle = {
+          enabled = true, -- This is usually true by default but good to be explicit
+        },
+      },
     },
 
     -- Language server `initializationOptions`
